@@ -1,0 +1,8 @@
+allowBuilds:
+  '@parcel/watcher': true
+  core-js: true
+  core-js-pure: true
+  esbuild: true
+  libxmljs2: true
+  nx: true
+  sn-http-request: true

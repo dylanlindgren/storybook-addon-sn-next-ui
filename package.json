@@ -1,0 +1,68 @@
+{
+  "name": "@dylanlindgren/storybook-addon-sn-next-ui",
+  "version": "0.1.0",
+  "description": "Storybook preset + manager addon for ServiceNow Next Experience UI components: loads the instance Next Experience runtime over an authed dev proxy (creds from the snc CLI config + keychain), compiles SCSS/snabbdom-JSX, and adds a theme switcher + connection status panel.",
+  "keywords": [
+    "storybook-addons",
+    "preset",
+    "servicenow",
+    "next-experience",
+    "web-components",
+    "vite"
+  ],
+  "license": "MIT",
+  "author": "Dylan Lindgren",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylanlindgren/storybook-addon-sn-next-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dylanlindgren/storybook-addon-sn-next-ui/issues"
+  },
+  "homepage": "https://github.com/dylanlindgren/storybook-addon-sn-next-ui#readme",
+  "type": "module",
+  "exports": {
+    ".": "./preset.js",
+    "./preset": "./preset.js",
+    "./manager": "./manager.js",
+    "./preview": "./preview.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "preset.js",
+    "manager.js",
+    "preview.js",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "peerDependencies": {
+    "@servicenow/ui-core": "*",
+    "@servicenow/ui-renderer-snabbdom": "*",
+    "@storybook/web-components-vite": "^10.0.0",
+    "react": "^16.8.0 || ^17 || ^18 || ^19",
+    "sass": ">=1.50.0",
+    "storybook": "^10.0.0",
+    "vite": "^5 || ^6 || ^7"
+  },
+  "peerDependenciesMeta": {
+    "@servicenow/ui-core": {
+      "optional": true
+    },
+    "@servicenow/ui-renderer-snabbdom": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@servicenow/cli": ">=27",
+    "@storybook/icons": "^2.0.2"
+  },
+  "devDependencies": {
+    "@servicenow/ui-core": "^24.1.1",
+    "@servicenow/ui-renderer-snabbdom": "^24.1.1"
+  },
+  "scripts": {
+    "gen:mega-names": "node scripts/generate-mega-names.mjs",
+    "prepack": "node scripts/generate-mega-names.mjs"
+  }
+}
