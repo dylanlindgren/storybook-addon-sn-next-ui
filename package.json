@@ -1,7 +1,7 @@
 {
   "name": "@dylanlindgren/storybook-addon-sn-next-ui",
-  "version": "0.1.0",
-  "description": "Storybook preset + manager addon for ServiceNow Next Experience UI components: loads the instance Next Experience runtime over an authed dev proxy (creds from the snc CLI config + keychain), compiles SCSS/snabbdom-JSX, and adds a theme switcher + connection status panel.",
+  "version": "0.1.1",
+  "description": "Storybook addon for developing ServiceNow Next Experience UI components, with a theme switcher and live instance connection.",
   "keywords": [
     "storybook-addons",
     "preset",
@@ -52,6 +52,9 @@
     "@servicenow/ui-renderer-snabbdom": {
       "optional": true
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "@servicenow/cli": ">=27",
