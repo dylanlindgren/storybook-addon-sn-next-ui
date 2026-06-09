@@ -8,6 +8,7 @@ import {
   snScssAsString,
   snSnabbdomJsx,
   snThemeLookup,
+  snFullReloadOnComponentChange,
 } from './src/vite-plugins.js'
 import { resolveSncConnection, buildProxy } from './src/proxy.js'
 import { renderPreviewHead } from './src/preview-head.js'
@@ -75,6 +76,7 @@ export async function viteFinal(viteConfig, options) {
     snSnabbdomJsx({ componentSrcDir }),
     snInstanceModules(),
     snScssAsString({ componentSrcDir, projectRoot }),
+    snFullReloadOnComponentChange({ componentSrcDir }),
     // Backs the panel's live theme lookup (dev-server only; no transform).
     snThemeLookup({ profile }),
   )

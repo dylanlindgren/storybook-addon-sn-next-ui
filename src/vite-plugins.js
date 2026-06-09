@@ -96,6 +96,7 @@ export function snScssAsString({ componentSrcDir, projectRoot }) {
   // transform — which matches on the .scss extension — never touches it. We
   // compile it ourselves in `load`.
   const PREFIX = '\0sn-scss:'
+  const idForFile = (file) => PREFIX + Buffer.from(file).toString('hex')
   let compileString
   return {
     name: 'sn-scss-as-string',
@@ -108,7 +109,7 @@ export function snScssAsString({ componentSrcDir, projectRoot }) {
       })
       const file = resolved?.id.split('?')[0]
       if (!file || !file.startsWith(componentSrcDir)) return null
-      return PREFIX + Buffer.from(file).toString('hex')
+      return idForFile(file)
     },
     load(id) {
       if (!id.startsWith(PREFIX)) return null
@@ -123,6 +124,18 @@ export function snScssAsString({ componentSrcDir, projectRoot }) {
       })
       this.addWatchFile(file)
       return { code: `export default ${JSON.stringify(css)}`, map: null }
+    },
+    // On a .scss edit, invalidate OUR virtual module by its exact id (Vite's
+    // ctx.modules can come back empty for a \0-prefixed virtual module, so we
+    // don't rely on it) and force a full preview reload. Without the explicit
+    // invalidation the reload re-serves the previously compiled CSS from cache.
+    handleHotUpdate(ctx) {
+      const file = ctx.file
+      if (!file.endsWith('.scss') || !file.startsWith(componentSrcDir)) return
+      const mod = ctx.server.moduleGraph.getModuleById(idForFile(file))
+      if (mod) ctx.server.moduleGraph.invalidateModule(mod)
+      ctx.server.ws.send({ type: 'full-reload' })
+      return [] // suppress the default (crash-prone) soft update
     },
   }
 }
@@ -160,8 +173,30 @@ export function snSnabbdomJsx({ componentSrcDir }) {
   }
 }
 
+// Component .js/.jsx is registered once via customElements.define() — a soft HMR
+// update would re-run the module and throw "already defined", silently aborting
+// the update (no reload, no visible change). So for any change to component
+// source under the source dir, force a full preview reload: it re-runs with an
+// empty registry, re-registering the element cleanly. (.scss is handled by
+// snScssAsString, which also invalidates its own virtual module.)
+export function snFullReloadOnComponentChange({ componentSrcDir }) {
+  return {
+    name: 'sn-full-reload-on-component-change',
+    handleHotUpdate(ctx) {
+      const file = ctx.file
+      if (!file.startsWith(componentSrcDir)) return
+      if (!/\.jsx?$/.test(file)) return
+      for (const mod of ctx.modules) {
+        ctx.server.moduleGraph.invalidateModule(mod)
+      }
+      ctx.server.ws.send({ type: 'full-reload' })
+      return [] // suppress the default (crash-prone) soft update
+    },
+  }
+}
+
 // Dev-server endpoint backing the preview's boot-time theme discovery. It
-// shells out to the `snc` CLI. Responds at THEME_LOOKUP_ROUTE with the raw 
+// shells out to the `snc` CLI. Responds at THEME_LOOKUP_ROUTE with the raw
 // snc payload (`{ result: [{ sys_id, name }] }`) or `{ error }` on failure.
 export function snThemeLookup({ profile }) {
   return {

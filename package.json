@@ -1,6 +1,6 @@
 {
   "name": "@dylanlindgren/storybook-addon-sn-next-ui",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Storybook addon for developing ServiceNow Next Experience UI components, with a theme switcher and live instance connection.",
   "keywords": [
     "storybook-addons",

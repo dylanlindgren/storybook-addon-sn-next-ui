@@ -2,11 +2,11 @@
 
 ## Modern component development for ServiceNow Next Experience
 
-Develop **ServiceNow Next Experience** UI components in **[Storybook](https://storybook.js.org)** with full local preview, hot reload, and no instance integration friction. Components render against the real Next Experience runtime and your instance's live theme assets – not mocks.
+Develop **ServiceNow Next Experience** UI components in **[Storybook](https://storybook.js.org)** with full local preview, live reload on save, and no instance integration friction. Components render against the real Next Experience runtime and your instance's live theme assets – not mocks.
 
 ### What you get
 
-- **Storybook's full power** – interactive development with instant hot reload, isolated testing without booting the instance, and the full addon ecosystem for docs and accessibility.
+- **Storybook's full power** – interactive development with live reload on every save, isolated testing without booting the instance, and the full addon ecosystem for docs and accessibility.
 - **Real instance rendering** – components render with the actual Next Experience runtime, using live theme assets discovered from your instance so you can test across every theme.
 - **Frictionless setup** – connect once via the ServiceNow CLI and credentials are handled for you. Standard Storybook workflows, plus a **ServiceNow Theme** toolbar to switch themes live and a connection panel showing instance status.
 
